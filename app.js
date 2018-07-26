@@ -57,7 +57,7 @@ $(document).ready(function() {
       nextarrival = trainstart += convertfrequency;
     }
 
-    convertarrival = moment.unix(nextarrival).format("HH:mm");
+    convertarrival = moment.unix(nextarrival).format("hh:mm a");
 
     trainData.arrival = convertarrival;
 
