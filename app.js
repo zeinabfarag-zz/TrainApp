@@ -51,8 +51,6 @@ $(document).ready(function() {
 
     var nextarrival = trainstart;
 
-    setInterval(function() {}, 60000);
-
     while (timenow > trainstart) {
       nextarrival = trainstart += convertfrequency;
     }
