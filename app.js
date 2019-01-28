@@ -1,88 +1,78 @@
+// Setup Firebase config object
+var config = {
+  apiKey: 'AIzaSyCU8kFnyMRvuqQoUyqg9J4vIU_dtG5eMDU',
+  authDomain: 'taylor54321-1e05d.firebaseapp.com',
+  databaseURL: 'https://taylor54321-1e05d.firebaseio.com',
+  projectId: 'taylor54321-1e05d',
+  storageBucket: 'taylor54321-1e05d.appspot.com',
+  messagingSenderId: '846098862236'
+};
+
 $(document).ready(function() {
-  var config = {
-    apiKey: "AIzaSyBhLPCcBVY3T0geldwGJLHauspwanmGNvU",
-    authDomain: "trainapp-c9d00.firebaseapp.com",
-    databaseURL: "https://trainapp-c9d00.firebaseio.com",
-    projectId: "trainapp-c9d00",
-    storageBucket: "",
-    messagingSenderId: "197391360785"
-  };
+  // Initialize Firebase
   firebase.initializeApp(config);
-  database = firebase.database();
+  var db = firebase.database();
 
-  var timenow = moment().unix();
-
-  var today = new Date();
-
-  var date =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-
-  $("#target").submit(function(event) {
+  // Add click event to submit
+  $('.btn').click(function(event) {
     event.preventDefault();
 
-    var name = $("#name")
-      .val()
-      .trim();
-    var destination = $("#destination")
-      .val()
-      .trim();
-    var time = $("#time")
-      .val()
-      .trim();
-    var frequency = $("#frequency")
-      .val()
-      .trim();
-
-    var trainData = {
-      name: name,
-      destination: destination,
-      time: time,
-      frequency: frequency
+    // Build trainSchedule object
+    var trainSchedule = {
+      trainName: $('#formGroupTrainNameInput').val(),
+      destination: $('#formGroupDestinationInput').val(),
+      firstTrainTime: moment(
+        $('#formGroupFirstTrainTimeInput')
+          .val()
+          .trim(),
+        'HH:mm'
+      ).format('X'),
+      frequency: $('#formGroupFrequencyInput').val()
     };
 
-    $("#name").val("");
-    $("#destination").val("");
-    $("#time").val("");
-    $("#frequency").val("");
-
-    var trainstart = moment(date + time, "YYYY/MM/DD HH:mm").unix();
-
-    var convertfrequency = frequency * 60;
-
-    var nextarrival = trainstart;
-
-    while (timenow > trainstart) {
-      nextarrival = trainstart += convertfrequency;
-    }
-
-    convertarrival = moment.unix(nextarrival).format("hh:mm a");
-
-    trainData.arrival = convertarrival;
-
-    var minaway = Math.round((nextarrival - timenow) / 60);
-
-    trainData.min = minaway;
-
-    database.ref().push(trainData);
+    // Commit object to database
+    db.ref('trainSchedule').push(trainSchedule);
   });
 
-  database.ref().on("child_added", function(snapshot) {
-    name = snapshot.val().name;
-    destination = snapshot.val().destination;
-    time = snapshot.val().time;
-    frequency = snapshot.val().frequency;
-    arrival = snapshot.val().arrival;
-    min = snapshot.val().min;
+  // Add value change listener
+  db.ref('trainSchedule').on('child_added', function(childSnapshot) {
+    var trainNames = childSnapshot.val().trainName;
+    var trainDest = childSnapshot.val().destination;
+    var trainFrequency = childSnapshot.val().frequency;
+    var firstTrainTime = childSnapshot.val().firstTrainTime;
+    var now = moment();
 
-    var newRow = $("<tr>").append(
-      $("<td>").text(name),
-      $("<td>").text(destination),
-      $("<td>").text(frequency),
-      $("<td>").text(arrival),
-      $("<td>").text(min)
+    // Calcluate time when train arrives
+    var timeRemainder =
+      now.diff(moment.unix(firstTrainTime), 'minutes') % trainFrequency;
+
+    // Figure out how many minutes until arrival
+    var minutesAway = trainFrequency - timeRemainder;
+
+    // Format nextArrival
+    var nextArrival = moment()
+      .add(minutesAway, 'm')
+      .format('HH:mm');
+
+    // Insert schedule row
+    var trainScheduleRow = $('<tr>');
+    trainScheduleRow.append(
+      $('<th>')
+        .attr('scope', 'col')
+        .text(childSnapshot.val().trainName),
+      $('<td>')
+        .attr('scope', 'col')
+        .text(childSnapshot.val().destination),
+      $('<td>')
+        .attr('scope', 'col')
+        .text(childSnapshot.val().frequency),
+      $('<td>')
+        .attr('scope', 'col')
+        .text(nextArrival),
+      $('<td>')
+        .attr('scope', 'col')
+        .text(minutesAway)
     );
-
-    // Append the new row to the table
-    $("tbody").append(newRow);
+    $('#trainSchedule').append(trainScheduleRow);
   });
 });

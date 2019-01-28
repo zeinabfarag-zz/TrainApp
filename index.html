@@ -2,104 +2,71 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Train </title>
-
-  <!-- bootstrap css -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-    crossorigin="anonymous">
-
-  <!-- bootsrap js -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-
-
-  <!-- CSS -->
-
-  <link rel="stylesheet" href="style.css">
-
-
-
-  <!-- firebase -->
-  <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
-
-
-  <!--moment js-->
-
-  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Train Scheduler</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+        crossorigin="anonymous">
 </head>
 
 <body>
+    <section class='container'>
+        <section class='row'>
+            <section class='jumbotron col-12'>
+                <h1 class='display-4'>Anytime is Train Time</h1>
+                <p class='lead'>Choo Choo. Chee Chee.</p>
+            </section>
+        </section>
+        <section class='row border border-primary rounded mb-4'>
+            <h4 class='col-12 text-light bg-primary'>Current Train Schedule</h4>
+            <table class='table'>
+                <thead>
+                    <th scope='col'>Train Name</th>
+                    <th scope='col'>Destination</th>
+                    <th scope='col'>Frequency (min)</th>
+                    <th scope='col'>Next Arrival</th>
+                    <th scope='col'>Minutes Away</th>
+                </thead>
+                <tbody id='trainSchedule'>
 
-  <div class="container">
-    <div class="jumbotron">
-      <h1 class="display-4 title">Train Service</h1>
-    </div>
+                </tbody>
+            </table>
+        </section>
+        <section class='row border border-primary rounded'>
+            <h4 class='col-12 text-light bg-primary'>Add Train</h4>
+            <form class='col-12'>
+                <section class='form-group'>
+                    <label for='formGroupTrainNameInput'>Train Name</label>
+                    <input type='text' class='form-control' id="formGroupTrainNameInput">
+                </section>
+                <section class='form-group'>
+                    <label for='formGroupDestinationInput'>Destination</label>
+                    <input type='text' class='form-control' id="formGroupDestinationInput">
+                </section>
+                <section class='form-group'>
+                    <label for='formGroupFirstTrainTimeInput'>First Train Time (HH:mm - military time)</label>
+                    <input type='text' class='form-control' id="formGroupFirstTrainTimeInput">
+                </section>
+                <section class='form-group'>
+                    <label for='formGroupFrequencyInput'>Frequency</label>
+                    <input type='text' class='form-control' id="formGroupFrequencyInput">
+                </section>
+                <button type='submit' class='btn btn-primary mb-2'>Submit</button>
+            </form>
+        </section>
+    </section>
 
-
-    <div class="row">
-      <div class="col-lg-6 schedule">
-
-        <h3> Current Train Schedule</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Train Name</th>
-              <th scope="col">Destination</th>
-              <th scope="col">Frequency (min)</th>
-              <th scope="col">Next Arrival</th>
-              <th scope- "col">Minutes Away</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-
-      </div>
-
-
-      <div class="col-lg-6 form">
-
-        <h3>Add Train</h3>
-        <form id="target">
-          <div class="form-group">
-            <label for="name">Train Name</label>
-            <input type="text" class="form-control" id="name">
-          </div>
-          <div class="form-group">
-            <label for="destination">Destination</label>
-            <input type="text" class="form-control" id="destination">
-          </div>
-          <div class="form-group">
-            <label for="time">First Train Time (HH:mm military time)</label>
-            <input type="text" class="form-control" id="time">
-          </div>
-          <div class="form-group">
-            <label for="frequency">Frequency(min)</label>
-            <input type="number" class="form-control" id="frequency">
-          </div>
-
-          <button type="submit" class="btn btn-primary submit">Submit</button>
-        </form>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- jQuery and js files -->
-    <script src="https://code.jquery.com/jquery-3.3.1.js " integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="
-      anonymous "></script>
-    <script src="app.js "></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+    <!-- Moment.js Reference -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>
