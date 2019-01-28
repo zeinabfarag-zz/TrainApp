@@ -1,12 +1,12 @@
 // Setup Firebase config object
 var config = {
-  apiKey: 'AIzaSyCU8kFnyMRvuqQoUyqg9J4vIU_dtG5eMDU',
-  authDomain: 'taylor54321-1e05d.firebaseapp.com',
-  databaseURL: 'https://taylor54321-1e05d.firebaseio.com',
-  projectId: 'taylor54321-1e05d',
-  storageBucket: 'taylor54321-1e05d.appspot.com',
-  messagingSenderId: '846098862236'
-};
+    apiKey: "AIzaSyBhLPCcBVY3T0geldwGJLHauspwanmGNvU",
+    authDomain: "trainapp-c9d00.firebaseapp.com",
+    databaseURL: "https://trainapp-c9d00.firebaseio.com",
+    projectId: "trainapp-c9d00",
+    storageBucket: "trainapp-c9d00.appspot.com",
+    messagingSenderId: "197391360785"
+  };
 
 $(document).ready(function() {
   // Initialize Firebase
