@@ -15,5 +15,5 @@ A train schedule application that incorporates Firebase to host arrival and depa
 
 ## Website
 
-https://github.com/zeinabfarag/TrainApp
+https://zeinabfarag.github.io/TrainApp/
 
